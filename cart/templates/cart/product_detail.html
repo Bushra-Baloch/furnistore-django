@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'cart_add' %}">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="1">
+    <input type="hidden" name="product_name" value="Modern Sofa">
+    <input type="hidden" name="price" value="500">
+    <button type="submit">Add to Cart</button>
+</form>

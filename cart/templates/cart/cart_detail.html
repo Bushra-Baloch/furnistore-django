@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Your Cart</h1>
+
+{% if cart %}
+    {% for key, item in cart.items %}
+        <div class="card" style="margin-bottom:15px;">
+            <h3>{{ item.name }}</h3>
+            <p>Price: ${{ item.price }}</p>
+
+            <div style="display:flex; align-items:center; gap:10px;">
+                <a href="{% url 'cart_decrease' key %}">
+                    <button>-</button>
+                </a>
+
+                <strong>{{ item.quantity }}</strong>
+
+                <a href="{% url 'cart_add' key %}">
+                    <button>+</button>
+                </a>
+
+                <a href="{% url 'cart_remove' key %}">
+                    <button style="background:#dc2626;">Remove</button>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <h2>Total: ${{ total }}</h2>
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}
+
+<a href="{% url 'checkout' %}">
+    <button style="margin-top:20px;">Proceed to Checkout</button>
+</a>

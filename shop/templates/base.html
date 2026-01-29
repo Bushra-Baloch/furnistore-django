@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}FurniStore{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
+    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+
+
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-container">
+
+        <div class="logo">FURNISTORE</div>
+
+        <nav class="nav-menu">
+            <a href="{% url 'home' %}" class="nav-link active">Home</a>
+
+            <div class="dropdown">
+                <span class="nav-link">Shop ▾</span>
+                <div class="dropdown-menu">
+                    {% for cat in categories %}
+                        <a href="{% url 'category_products' cat.slug %}">{{ cat.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <a href="{% url 'wishlist' %}" class="nav-link">Wishlist</a>
+            <a href="{% url 'cart_detail' %}" class="nav-link">Cart</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-btn">Login</a>
+            {% endif %}
+        </nav>
+
+    </div>
+</header>
+
+<!-- PAGE CONTENT -->
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+
+        <div>
+            <h3>FURNISTORE</h3>
+            <p>Premium furniture crafted for modern homes. Comfort & style combined.</p>
+        </div>
+
+        <div>
+            <h4>Quick Links</h4>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'cart_detail' %}">Cart</a>
+            <a href="{% url 'wishlist' %}">Wishlist</a>
+        </div>
+
+        <div>
+            <h4>Categories</h4>
+            {% for cat in categories %}
+                <a href="{% url 'category_products' cat.slug %}">{{ cat.name }}</a>
+            {% endfor %}
+        </div>
+
+        <div>
+            <h4>Contact</h4>
+            <p>Email: balochbushra@gmail.com</p>
+            <p>Phone: +92 318 486 4222</p>
+            <p>Location: Pakistan</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 FurniStore · All rights reserved
+    </div>
+</footer>
+
+</body>
+</html>

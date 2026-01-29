@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Checkout</h1>
+
+{% if cart %}
+    {% for key, item in cart.items %}
+        <div class="card" style="margin-bottom:15px;">
+            <h3>{{ item.name }}</h3>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Price: ${{ item.price }}</p>
+            <p><strong>Subtotal:</strong> ${{ item.price|floatformat:2|add:"0" }}</p>
+        </div>
+    {% endfor %}
+
+    <h2>Total Amount: ${{ total }}</h2>
+
+    <button style="margin-top:20px;">Place Order</button>
+
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

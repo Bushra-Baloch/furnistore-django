@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Register | Furniture Store{% endblock %}
+
+{% block content %}
+<h1>Create Account</h1>
+
+<form method="post" class="card" style="max-width: 400px;">
+    {% csrf_token %}
+
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Email</label>
+    <input type="email" name="email">
+
+    <label>Password</label>
+    <input type="password" name="password1" required>
+
+    <label>Confirm Password</label>
+    <input type="password" name="password2" required>
+
+    <button type="submit">Register</button>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
+</form>
+{% endblock %}

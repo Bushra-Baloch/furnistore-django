@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} | FurniStore{% endblock %}
+
+{% block content %}
+
+<div class="product-detail">
+
+    <!-- LEFT: IMAGE -->
+    <div class="product-image">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% endif %}
+    </div>
+
+    <!-- RIGHT: INFO -->
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+
+        <p class="product-price">${{ product.price }}</p>
+
+        <p class="product-desc">
+            {{ product.description }}
+        </p>
+
+        <p class="product-category">
+            Category:
+            <strong>{{ product.category.name }}</strong>
+        </p>
+
+        <div class="product-actions">
+            <a href="{% url 'cart_add' product.id %}">
+                <button class="primary-btn">Add to Cart</button>
+            </a>
+            <a href="{% url 'add_to_wishlist' product.id %}">
+    
+</a>
+
+            <button class="wishlist-btn">♡ Add to Wishlist</button>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

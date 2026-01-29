@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | FurniStore{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Design Your Comfort</h1>
+        <p>Premium furniture crafted for modern homes</p>
+        <a href="#products">
+            <button>Explore Collection</button>
+        </a>
+    </div>
+</section>
+
+<!-- SECTION TITLE -->
+<h2 id="products" class="section-title">Featured Furniture</h2>
+
+<!-- PRODUCT GRID -->
+<div class="grid">
+    {% for product in products %}
+        <div class="card">
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+
+            <div class="card-body">
+                <h3>{{ product.name }}</h3>
+                <p class="price">${{ product.price }}</p>
+
+                <a href="{% url 'product_detail' product.slug %}">
+                    <button>View Details</button>
+                </a>
+            </div>
+
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
