@@ -1,6 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div style="margin-top: 30px;">
+    <a href="{% url 'checkout' %}">
+        <button style="
+            padding: 14px 30px;
+            background: #eab308;
+            color: #111827;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        ">
+            Proceed to Checkout
+        </button>
+    </a>
+</div>
+
 <h1>Your Cart</h1>
 
 {% if cart %}

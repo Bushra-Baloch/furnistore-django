@@ -4,19 +4,34 @@
 <h1>Checkout</h1>
 
 {% if cart %}
+<form method="POST" action="{% url 'checkout' %}">
+    {% csrf_token %}
+
     {% for key, item in cart.items %}
         <div class="card" style="margin-bottom:15px;">
             <h3>{{ item.name }}</h3>
             <p>Quantity: {{ item.quantity }}</p>
             <p>Price: ${{ item.price }}</p>
-            <p><strong>Subtotal:</strong> ${{ item.price|floatformat:2|add:"0" }}</p>
+            <p>
+                <strong>Subtotal:</strong>
+                ${{ item.price|floatformat:2 }}
+            </p>
         </div>
     {% endfor %}
 
     <h2>Total Amount: ${{ total }}</h2>
 
-    <button style="margin-top:20px;">Place Order</button>
+    <!-- REQUIRED FIELDS -->
+    <input type="text" name="full_name" placeholder="Full Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <textarea name="address" placeholder="Address" required></textarea><br><br>
+    <input type="text" name="city" placeholder="City" required><br><br>
 
+    <!-- 🔥 THIS IS THE KEY -->
+    <button type="submit" style="margin-top:20px;">
+        Place Order
+    </button>
+</form>
 {% else %}
     <p>Your cart is empty.</p>
 {% endif %}
