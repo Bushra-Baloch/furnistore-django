@@ -1,9 +1,9 @@
-🛋️ FurniStore — Django Furniture E-Commerce Website
+FurniStore — Django Furniture E-Commerce Website
 
 FurniStore is a modern furniture e-commerce web application built with Django, featuring product listings, cart, wishlist, checkout, and order management with a stylish frontend.
 
-🚀 Features
-🛒 Core E-Commerce
+Features
+Core E-Commerce
 
 Product listing with categories
 
@@ -11,7 +11,7 @@ Product detail pages
 
 Shopping cart (session-based)
 
-Wishlist ❤️
+Wishlist 
 
 Checkout & order placement
 
@@ -19,7 +19,7 @@ Order & OrderItem management
 
 Order success confirmation page
 
-👤 User System
+User System
 
 User authentication (Login / Logout)
 
@@ -27,7 +27,7 @@ Wishlist linked to user account
 
 Orders linked to authenticated users
 
-🛠️ Admin Panel
+Admin Panel
 
 Manage products & categories
 
@@ -35,7 +35,7 @@ View customer orders
 
 Order items stored per order
 
-🎨 Frontend
+Frontend
 
 Modern responsive UI
 
@@ -49,7 +49,7 @@ Optimized image handling
 
 Mobile-friendly layout
 
-🧰 Tech Stack
+Tech Stack
 
 Backend: Django (Python)
 
