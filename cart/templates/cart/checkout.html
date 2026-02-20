@@ -4,6 +4,8 @@
 <h1>Checkout</h1>
 
 {% if cart %}
+
+
 <form method="POST" action="{% url 'checkout' %}">
     {% csrf_token %}
 
@@ -21,13 +23,15 @@
 
     <h2>Total Amount: ${{ total }}</h2>
 
-    <!-- REQUIRED FIELDS -->
+    <hr>
+
+    <h3>Shipping Details</h3>
+
     <input type="text" name="full_name" placeholder="Full Name" required><br><br>
     <input type="email" name="email" placeholder="Email" required><br><br>
     <textarea name="address" placeholder="Address" required></textarea><br><br>
     <input type="text" name="city" placeholder="City" required><br><br>
 
-    <!-- 🔥 THIS IS THE KEY -->
     <button type="submit" style="margin-top:20px;">
         Place Order
     </button>
