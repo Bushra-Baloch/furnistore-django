@@ -3,7 +3,8 @@ from .models import Product, Category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from .models import Wishlist
-from .models import Order, OrderItem
+from orders.models import Order, OrderItem
+
 from cart.cart import Cart   # (your cart system)
 @login_required
 def checkout(request):

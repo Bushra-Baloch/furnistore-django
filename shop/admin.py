@@ -1,28 +1,20 @@
 from django.contrib import admin
-
-# Register your models here.
-
-from .models import Category, Product
-
-
-from .models import Order, OrderItem
-
-admin.site.register(Order)
-admin.site.register(OrderItem)
+from .models import Category, Product, Wishlist
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'is_active')
-    list_filter = ('is_active', 'category')
+    list_display = ('name', 'category', 'price', 'is_active', 'created_at')
+    list_filter = ('is_active', 'created_at', 'category')
     prepopulated_fields = {'slug': ('name',)}
 
-    
-from .models import Wishlist
 
-admin.site.register(Wishlist)
+@admin.register(Wishlist)
+class WishlistAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'created_at')

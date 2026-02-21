@@ -1,30 +1,32 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from shop.models import Product
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .cart import Cart
-from shop.models import Order, OrderItem
 from django.core.mail import send_mail
+from django.conf import settings
+
+from shop.models import Product
+from orders.models import Order, OrderItem
+
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+# ----------------------------
+# PAYMENT SUCCESS
+# ----------------------------
 def payment_success(request):
     return render(request, 'cart/success.html')
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from shop.models import Product, Order, OrderItem
-import stripe
-from django.conf import settings
-from django.shortcuts import render, redirect
-from .models import Order
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
+# ----------------------------
+# STRIPE PAYMENT
+# ----------------------------
+@login_required
 def payment(request, order_id):
-    order = Order.objects.get(id=order_id)
+    order = get_object_or_404(Order, id=order_id, user=request.user)
 
     intent = stripe.PaymentIntent.create(
-        amount=int(order.get_total_price() * 100),  # cents
+        amount=int(order.total_price * 100),  # convert to cents
         currency='usd',
         metadata={'order_id': order.id}
     )
@@ -35,12 +37,14 @@ def payment(request, order_id):
         'order': order
     })
 
+
 # ----------------------------
 # CART DETAIL
 # ----------------------------
-@login_required(login_url='login')
+@login_required
 def cart_detail(request):
     cart = request.session.get('cart', {})
+
     total = sum(
         item['price'] * item['quantity']
         for item in cart.values()
@@ -55,7 +59,7 @@ def cart_detail(request):
 # ----------------------------
 # ADD TO CART
 # ----------------------------
-@login_required(login_url='login')
+@login_required
 def cart_add(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = request.session.get('cart', {})
@@ -81,7 +85,7 @@ def cart_add(request, product_id):
 # ----------------------------
 # DECREASE QUANTITY
 # ----------------------------
-@login_required(login_url='login')
+@login_required
 def cart_decrease(request, product_id):
     cart = request.session.get('cart', {})
     pid = str(product_id)
@@ -100,7 +104,7 @@ def cart_decrease(request, product_id):
 # ----------------------------
 # REMOVE ITEM
 # ----------------------------
-@login_required(login_url='login')
+@login_required
 def cart_remove(request, product_id):
     cart = request.session.get('cart', {})
     pid = str(product_id)
@@ -129,10 +133,10 @@ def checkout(request):
     if request.method == 'POST':
         order = Order.objects.create(
             user=request.user,
-            full_name=request.POST['full_name'],
-            email=request.POST['email'],
-            address=request.POST['address'],
-            city=request.POST['city'],
+            full_name=request.POST.get('full_name'),
+            email=request.POST.get('email'),
+            address=request.POST.get('address'),
+            city=request.POST.get('city'),
             total_price=total
         )
 
@@ -144,27 +148,27 @@ def checkout(request):
                 quantity=item['quantity']
             )
 
-        # ✅ SEND EMAIL (console ke liye)
+        # Send confirmation email
         send_mail(
             subject='Order Confirmation - FurniStore',
-            message=f'''
+            message=f"""
 Thank you for your order!
 
 Order ID: {order.id}
 Total Amount: ${order.total_price}
 
 We will contact you soon.
-''',
-            from_email='noreply@furnistore.com',
+""",
+            from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[order.email],
-            fail_silently=True
-
+            fail_silently=False
         )
 
-        # ✅ CART CLEAR HERE ONLY
+        # Clear cart
         request.session['cart'] = {}
+        request.session.modified = True
 
-        return redirect('order_success')
+        return redirect('orders:order_success')
 
     return render(request, 'cart/checkout.html', {
         'cart': cart,
