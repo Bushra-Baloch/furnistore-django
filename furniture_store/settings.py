@@ -151,3 +151,4 @@ DEFAULT_FROM_EMAIL = 'FurniStore <bushrabaloch2020gmail@gmail.com>'
 STRIPE_PUBLIC_KEY = 'mk_1SuwpV2YPSEC4vIATQfkvdjY'
 
 STRIPE_SECRET_KEY = 'mk_1SuwqG2YPSEC4vIAA4BEoSLS'
+

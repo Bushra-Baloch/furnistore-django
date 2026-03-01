@@ -1,11 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Product, Category
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from .models import Wishlist
-from orders.models import Order, OrderItem
 
-from cart.cart import Cart   # (your cart system)
+from .models import Product, Category, Wishlist
+from orders.models import Order, OrderItem
+from cart.cart import Cart
 @login_required
 def checkout(request):
     cart = Cart(request)
@@ -40,7 +38,7 @@ def order_success(request):
 
 
 def home(request):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.filter(is_active=True).select_related('category')
     categories = Category.objects.all()
 
     return render(request, 'shop/home.html', {
@@ -79,6 +77,8 @@ def winter_sale(request):
 
 
 
+
+
 @login_required
 def checkout(request):
     cart = Cart(request)
@@ -104,7 +104,11 @@ def checkout(request):
         cart.clear()
         return redirect('order_success')
 
-    return render(request, 'shop/checkout.html')
+    return render(request, 'shop/checkout.html', {'cart': cart})
+
+
+
+
 
 @login_required
 def add_to_wishlist(request, product_id):
@@ -117,7 +121,7 @@ def add_to_wishlist(request, product_id):
 
 @login_required
 def wishlist(request):
-    items = Wishlist.objects.filter(user=request.user)
+    items = Wishlist.objects.filter(user=request.user).select_related('product')
     return render(request, 'shop/wishlist.html', {'items': items})
 
 
