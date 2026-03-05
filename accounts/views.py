@@ -86,3 +86,36 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Logged out successfully")
     return redirect('home')
+
+
+from django.contrib.auth.decorators import login_required
+
+
+# ----------------------------
+# EDIT PROFILE
+# ----------------------------
+@login_required
+def edit_profile(request):
+
+    profile = request.user.profile
+
+    if request.method == "POST":
+
+        request.user.email = request.POST.get("email")
+
+        profile.phone = request.POST.get("phone")
+        profile.address = request.POST.get("address")
+        profile.city = request.POST.get("city")
+
+        request.user.save()
+        profile.save()
+
+        messages.success(request, "Profile updated successfully")
+
+        return redirect("profile")
+
+    context = {
+        "profile": profile
+    }
+
+    return render(request, "accounts/edit_profile.html", context)
