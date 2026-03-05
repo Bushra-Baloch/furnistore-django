@@ -2,7 +2,24 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+
+# ----------------------------
+# USER PROFILE
+# ----------------------------
+@login_required
+def profile_view(request):
+
+    profile = request.user.profile
+    orders = request.user.orders.all()
+
+    context = {
+        "profile": profile,
+        "orders": orders
+    }
+
+    return render(request, "accounts/profile.html", context)
 
 # ----------------------------
 # LOGIN
