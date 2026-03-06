@@ -119,3 +119,20 @@ def edit_profile(request):
     }
 
     return render(request, "accounts/edit_profile.html", context)
+
+from django.contrib.auth.decorators import login_required
+
+
+# ----------------------------
+# USER DASHBOARD
+# ----------------------------
+@login_required
+def dashboard_view(request):
+
+    orders = request.user.orders.all()[:5]  # last 5 orders
+
+    context = {
+        "orders": orders
+    }
+
+    return render(request, "accounts/dashboard.html", context)
