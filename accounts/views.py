@@ -122,17 +122,27 @@ def edit_profile(request):
 
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.decorators import login_required
+from orders.models import Order
+from shop.models import Wishlist
 
-# ----------------------------
-# USER DASHBOARD
-# ----------------------------
+
 @login_required
 def dashboard_view(request):
 
-    orders = request.user.orders.all()[:5]  # last 5 orders
+    orders = request.user.orders.all().order_by('-created_at')
+
+    total_orders = orders.count()
+
+    total_spent = sum(order.total_price for order in orders)
+
+    wishlist_count = Wishlist.objects.filter(user=request.user).count()
 
     context = {
-        "orders": orders
+        "orders": orders[:5],  # show last 5 orders
+        "total_orders": total_orders,
+        "total_spent": total_spent,
+        "wishlist_count": wishlist_count,
     }
 
     return render(request, "accounts/dashboard.html", context)
